@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@tests/*": ["tests/*"],
+      "@helpers/*": ["tests/helpers/*"],
+      "@models/*": ["tests/models/*"],
+      "@data/*": ["tests/data/*"],
+      "@schemas/*": ["tests/schemas/*"]
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowJs": true
+  },
+  "include": [
+    "tests/**/*.ts",
+    "jest.config.ts"
+  ]
+}
