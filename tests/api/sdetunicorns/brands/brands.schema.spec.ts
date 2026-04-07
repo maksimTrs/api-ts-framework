@@ -5,17 +5,6 @@ import {BrandResponse} from '@models/brand';
 
 const brandClient = new BrandClient();
 
-describe('[smoke] GET /brands — response schema', () => {
-    it('should match the expected schema on 200', async () => {
-        const response = await brandClient.get()
-            .expect(200);
-
-        expect(response.body).toEqual(
-            expect.arrayOf(brandSchemas.listItem)
-        );
-    });
-});
-
 describe('GET /brands/{id} — response schema', () => {
     let brandId: string;
 

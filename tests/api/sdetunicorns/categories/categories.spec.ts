@@ -1,6 +1,6 @@
 import {CategoryClient} from '@clients/categoryClient';
 import {AuthClient} from '@clients/authClient';
-import {CategoryListItem, CategoryResponse} from '@models/category';
+import {CategoryResponse} from '@models/category';
 import {LoginResponse} from '@models/auth';
 import {createCategoryPayload} from '@data/categoryFactory';
 
@@ -21,25 +21,6 @@ describe('Categories', () => {
         for (const id of createdCategoryIds) {
             await categoryClient.delete(id);
         }
-    });
-
-
-    it('[smoke] GET /categories', async () => {
-        const response = await categoryClient
-            .get()
-            .expect(200);
-
-        const body = response.body as CategoryListItem[];
-
-        expect(body.length).toBeGreaterThan(1);
-        expect(body).toEqual(
-            expect.arrayOf(
-                {
-                    _id: expect.any(String),
-                    name: expect.any(String),
-                }
-            )
-        );
     });
 
 

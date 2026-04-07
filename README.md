@@ -32,7 +32,7 @@ Designed as a reference architecture for SDET teams — clean layering, strict t
 - **Typed API contracts** — `interface` for every request body, response, list item, and error shape
 - **Factory functions** — generate test data with Faker, accept `Partial<T>` overrides for variations
 - **Schema validation** — dedicated `*.schema.spec.ts` files verify exact response structure via asymmetric matchers
-- **Smoke test suite** — `[smoke]`-tagged GET-only tests, runnable separately in CI
+- **Smoke test suite** — dedicated `smoke.spec.ts` with GET-only tests, runnable separately in CI
 - **Global assertion guard** — `expect.hasAssertions()` in every test automatically (catches forgotten `await`)
 - **Path aliases** — clean imports: `@clients/*`, `@models/*`, `@data/*`, `@schemas/*`, `@helpers/*`
 - **Three reporters** — console output + JUnit XML (CI integration) + interactive HTML dashboard

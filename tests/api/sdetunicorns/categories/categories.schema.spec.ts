@@ -14,17 +14,6 @@ beforeAll(async () => {
     categoryClient = new CategoryClient(body.token);
 });
 
-describe('[smoke] GET /categories — response schema', () => {
-    it('should match the expected schema on 200', async () => {
-        const response = await categoryClient.get()
-            .expect(200);
-
-        expect(response.body).toEqual(
-            expect.arrayOf(categorySchemas.listItem)
-        );
-    });
-});
-
 describe('POST /categories — response schema', () => {
     const createdCategoryIds: string[] = [];
 
