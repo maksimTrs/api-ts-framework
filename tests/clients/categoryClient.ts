@@ -10,6 +10,12 @@ export class CategoryClient {
     constructor(private readonly token?: string) {
     }
 
+    private withAuth(req: Test): Test {
+        return this.token
+            ? req.set('Authorization', `Bearer ${this.token}`)
+            : req;
+    }
+
     get(): Test {
         return this.request
             .get('/categories');
@@ -21,38 +27,23 @@ export class CategoryClient {
     }
 
     post(body: CategoryRequestBody): Test {
-        const req = this.request.post('/categories').send(body);
-        return this.token
-            ? req.set('Authorization', `Bearer ${this.token}`)
-            : req;
+        return this.withAuth(this.request.post('/categories').send(body));
     }
 
     postRaw(body: Record<string, unknown>): Test {
-        const req = this.request.post('/categories').send(body);
-        return this.token
-            ? req.set('Authorization', `Bearer ${this.token}`)
-            : req;
+        return this.withAuth(this.request.post('/categories').send(body));
     }
 
     put(categoryId: string, body: CategoryRequestBody): Test {
-        const req = this.request.put(`/categories/${categoryId}`).send(body);
-        return this.token
-            ? req.set('Authorization', `Bearer ${this.token}`)
-            : req;
+        return this.withAuth(this.request.put(`/categories/${categoryId}`).send(body));
     }
 
     putRaw(categoryId: string, body: Record<string, unknown>): Test {
-        const req = this.request.put(`/categories/${categoryId}`).send(body);
-        return this.token
-            ? req.set('Authorization', `Bearer ${this.token}`)
-            : req;
+        return this.withAuth(this.request.put(`/categories/${categoryId}`).send(body));
     }
 
     delete(categoryId: string): Test {
-        const req = this.request.delete(`/categories/${categoryId}`);
-        return this.token
-            ? req.set('Authorization', `Bearer ${this.token}`)
-            : req;
+        return this.withAuth(this.request.delete(`/categories/${categoryId}`));
     }
 
 }

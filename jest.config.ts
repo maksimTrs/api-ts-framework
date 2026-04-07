@@ -34,7 +34,7 @@ const config: Config = {
   reporters: [
     'default',
     ['jest-junit', { outputDirectory: 'reports', outputName: 'junit.xml' }],
-    ['jest-html-reporters', { publicPath: 'reports', filename: 'report.html' }],
+    ['jest-html-reporters', { publicPath: 'reports', filename: 'index.html' }],
   ],
 
   // Verbose output — each test listed separately

@@ -65,7 +65,6 @@ describe('Categories', () => {
                 .post(body)
                 .expect(200);
             categoryId = (response.body as CategoryResponse)._id;
-            createdCategoryIds.push(categoryId);
         });
 
         it('DELETE /categories/:id', async () => {

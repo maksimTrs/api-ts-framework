@@ -20,7 +20,6 @@ describe('API testing: brands endpoints', () => {
         const body = response.body as BrandResponse;
         expect(body._id).toBeTruthy();
         brandId = body._id;
-        createdBrandIds.push(brandId);
     });
 
     afterAll(async () => {
