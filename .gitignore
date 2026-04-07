@@ -13,6 +13,7 @@ node_modules/
 
 # Claude Code
 .claude/
+CLAUDE.md
 
 # Local planning docs
 docs/

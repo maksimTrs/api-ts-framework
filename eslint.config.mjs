@@ -26,6 +26,6 @@ export default tseslint.config(
 
     // Ignored directories
     {
-        ignores: ['node_modules/', 'coverage/'],
+        ignores: ['node_modules/', 'coverage/', 'reports/'],
     },
 );
