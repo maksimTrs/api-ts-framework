@@ -3,6 +3,26 @@ import {BrandClient} from '@clients/brandClient';
 import {createBrandPayload} from '@data/brandFactory';
 import {BrandErrorResponse, BrandListItem, BrandResponse} from '@models/brand';
 
+describe('[smoke] GET /brands', () => {
+    const brandClient = new BrandClient();
+
+    it('GET /brands', async () => {
+        const response = await brandClient.get()
+            .expect(200);
+
+        const body = response.body as BrandListItem[];
+        expect(body.length).toBeGreaterThan(1);
+        expect(body).toEqual(
+            expect.arrayOf(
+                {
+                    _id: expect.any(String),
+                    name: expect.any(String),
+                }
+            )
+        );
+    });
+});
+
 describe('API testing: brands endpoints', () => {
     const brandClient = new BrandClient();
     let brandId: string;
@@ -26,14 +46,6 @@ describe('API testing: brands endpoints', () => {
         for (const id of createdBrandIds) {
             await brandClient.delete(id);
         }
-    });
-
-    it('GET /brands', async () => {
-        const response = await brandClient.get()
-            .expect(200);
-
-        const body = response.body as BrandListItem[];
-        expect(body.length).toBeGreaterThan(1);
     });
 
     it('GET /brands/{id}', async () => {
