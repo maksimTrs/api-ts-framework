@@ -1,24 +1,31 @@
-import {CategoryController} from '@tests/controller/categoryController';
-import {AuthController} from '@tests/controller/authController';
+import {CategoryClient} from '@clients/categoryClient';
+import {AuthClient} from '@clients/authClient';
 import {CategoryListItem, CategoryResponse} from '@models/category';
 import {LoginResponse} from '@models/auth';
 import {createCategoryPayload} from '@data/categoryFactory';
 
 describe('Categories', () => {
-    let categoryController: CategoryController;
-    const authController = new AuthController();
+    let categoryClient: CategoryClient;
+    const authClient = new AuthClient();
+    const createdCategoryIds: string[] = [];
 
     beforeAll(async () => {
-        const response = await authController
+        const response = await authClient
             .login()
             .expect(200);
         const body = response.body as LoginResponse;
-        categoryController = new CategoryController(body.token);
+        categoryClient = new CategoryClient(body.token);
+    });
+
+    afterAll(async () => {
+        for (const id of createdCategoryIds) {
+            await categoryClient.delete(id);
+        }
     });
 
 
-    it('GET /categories', async () => {
-        const response = await categoryController
+    it('[smoke] GET /categories', async () => {
+        const response = await categoryClient
             .get()
             .expect(200);
 
@@ -39,9 +46,11 @@ describe('Categories', () => {
     describe('Create Categories', () => {
         it('POST /categories', async () => {
             const body = createCategoryPayload();
-            const response = await categoryController
+            const response = await categoryClient
                 .post(body);
 
+            const created = response.body as CategoryResponse;
+            createdCategoryIds.push(created._id);
             expect(response.statusCode).toEqual(200);
         });
     });
@@ -52,14 +61,15 @@ describe('Categories', () => {
 
         beforeAll(async () => {
             const body = createCategoryPayload();
-            const response = await categoryController
+            const response = await categoryClient
                 .post(body)
                 .expect(200);
             categoryId = (response.body as CategoryResponse)._id;
+            createdCategoryIds.push(categoryId);
         });
 
         it('DELETE /categories/:id', async () => {
-            const response = await categoryController
+            const response = await categoryClient
                 .delete(categoryId)
                 .expect(200);
 

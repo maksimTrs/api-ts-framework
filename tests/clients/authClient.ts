@@ -2,7 +2,7 @@ import supertest, {Test} from 'supertest';
 import {env} from '@helpers/envConfig';
 
 // swagger -> https://www.practice-react.sdetunicorns.com/test/api-docs/
-export class AuthController {
+export class AuthClient {
     private readonly request = supertest(env.BASE_URL);
 
     login(): Test {

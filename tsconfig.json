@@ -9,7 +9,8 @@
       "@helpers/*": ["tests/helpers/*"],
       "@models/*": ["tests/models/*"],
       "@data/*": ["tests/data/*"],
-      "@schemas/*": ["tests/schemas/*"]
+      "@schemas/*": ["tests/schemas/*"],
+      "@clients/*": ["tests/clients/*"]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,

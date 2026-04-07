@@ -3,7 +3,7 @@ import {env} from '@helpers/envConfig';
 import {CategoryRequestBody} from '@models/category';
 
 // swagger -> https://www.practice-react.sdetunicorns.com/test/api-docs/
-export class CategoryController {
+export class CategoryClient {
     private readonly request = supertest(env.BASE_URL);
 
 
@@ -28,9 +28,10 @@ export class CategoryController {
     }
 
     postRaw(body: Record<string, unknown>): Test {
-        return this.request
-            .post('/categories')
-            .send(body);
+        const req = this.request.post('/categories').send(body);
+        return this.token
+            ? req.set('Authorization', `Bearer ${this.token}`)
+            : req;
     }
 
     put(categoryId: string, body: CategoryRequestBody): Test {
@@ -41,9 +42,10 @@ export class CategoryController {
     }
 
     putRaw(categoryId: string, body: Record<string, unknown>): Test {
-        return this.request
-            .put(`/categories/${categoryId}`)
-            .send(body);
+        const req = this.request.put(`/categories/${categoryId}`).send(body);
+        return this.token
+            ? req.set('Authorization', `Bearer ${this.token}`)
+            : req;
     }
 
     delete(categoryId: string): Test {

@@ -3,7 +3,7 @@ import {env} from '@helpers/envConfig';
 import {BrandRequestBody} from '@models/brand';
 
 // swagger -> https://www.practice-react.sdetunicorns.com/test/api-docs/
-export class BrandController {
+export class BrandClient {
     private readonly request = supertest(env.BASE_URL);
 
     get(): Test {

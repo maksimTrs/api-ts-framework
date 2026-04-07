@@ -29,9 +29,9 @@ jobs:
       - run: npm ci
       - run: npm run lint
 
-  test:
+  smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     permissions:
       contents: read
       checks: write
@@ -44,7 +44,7 @@ jobs:
           node-version: lts/*
           cache: npm
       - run: npm ci
-      - run: npm test
+      - run: npm run test:smoke
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
           EMAIL: ${{ secrets.EMAIL }}
@@ -53,7 +53,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           report_paths: reports/junit.xml
-          check_name: Test Results
+          check_name: Smoke Test Results
           detailed_summary: true
           include_passed: true
           include_time_in_summary: true
@@ -69,9 +69,9 @@ jobs:
   deploy-report:
     if: >-
       !cancelled()
-      && needs.test.result != 'skipped'
+      && needs.smoke.result != 'skipped'
       && github.ref == 'refs/heads/main'
-    needs: test
+    needs: smoke
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
