@@ -1,0 +1,28 @@
+# Security: secrets must NEVER enter the build context
+.env
+.env.*
+
+# Recreated inside container
+node_modules/
+
+# Test artifacts from previous local runs
+reports/
+coverage/
+
+# Version control
+.git/
+.gitignore
+
+# IDE
+.idea/
+
+# Claude Code config
+.claude/
+CLAUDE.md
+
+# Local docs
+docs/
+README.md
+
+# CI config (not used inside container)
+.github/
