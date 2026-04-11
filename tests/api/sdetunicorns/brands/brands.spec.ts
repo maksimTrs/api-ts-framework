@@ -1,10 +1,39 @@
 import {faker} from '@faker-js/faker';
 import {BrandClient} from '@clients/brandClient';
 import {createBrandPayload} from '@data/brandFactory';
-import {BrandErrorResponse, BrandResponse} from '@models/brand';
+import {BrandErrorResponse, BrandListItem, BrandResponse} from '@models/brand';
+import {brandSchemas} from '@schemas/brandSchemas';
+
+const brandClient = new BrandClient();
+
+describe('[smoke] GET /brands', () => {
+    it('should return a list of brands', async () => {
+        const response = await brandClient.get()
+            .expect(200);
+
+        const body = response.body as BrandListItem[];
+        expect(body.length).toBeGreaterThan(1);
+        expect(body).toEqual(
+            expect.arrayOf(
+                {
+                    _id: expect.any(String),
+                    name: expect.any(String),
+                }
+            )
+        );
+    });
+
+    it('should match the expected response schema', async () => {
+        const response = await brandClient.get()
+            .expect(200);
+
+        expect(response.body).toEqual(
+            expect.arrayOf(brandSchemas.listItem)
+        );
+    });
+});
 
 describe('API testing: brands endpoints', () => {
-    const brandClient = new BrandClient();
     let brandId: string;
     const createdBrandIds: string[] = [];
 
@@ -74,7 +103,6 @@ describe('API testing: brands endpoints', () => {
 });
 
 describe('POST /brands — negative cases', () => {
-    const brandClient = new BrandClient();
 
     it('should return 422 when body is empty', async () => {
         const response = await brandClient.postPartial({})

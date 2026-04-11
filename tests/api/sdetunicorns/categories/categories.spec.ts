@@ -1,8 +1,38 @@
 import {CategoryClient} from '@clients/categoryClient';
 import {AuthClient} from '@clients/authClient';
-import {CategoryResponse} from '@models/category';
+import {CategoryListItem, CategoryResponse} from '@models/category';
 import {LoginResponse} from '@models/auth';
 import {createCategoryPayload} from '@data/categoryFactory';
+import {categorySchemas} from '@schemas/categorySchemas';
+
+const categoryClient = new CategoryClient();
+
+describe('[smoke] GET /categories', () => {
+    it('should return a list of categories', async () => {
+        const response = await categoryClient.get()
+            .expect(200);
+
+        const body = response.body as CategoryListItem[];
+        expect(body.length).toBeGreaterThan(1);
+        expect(body).toEqual(
+            expect.arrayOf(
+                {
+                    _id: expect.any(String),
+                    name: expect.any(String),
+                }
+            )
+        );
+    });
+
+    it('should match the expected response schema', async () => {
+        const response = await categoryClient.get()
+            .expect(200);
+
+        expect(response.body).toEqual(
+            expect.arrayOf(categorySchemas.listItem)
+        );
+    });
+});
 
 describe('Categories', () => {
     let categoryClient: CategoryClient;
