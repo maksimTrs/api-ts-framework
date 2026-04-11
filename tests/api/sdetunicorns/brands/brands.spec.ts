@@ -77,7 +77,7 @@ describe('POST /brands — negative cases', () => {
     const brandClient = new BrandClient();
 
     it('should return 422 when body is empty', async () => {
-        const response = await brandClient.post({})
+        const response = await brandClient.postPartial({})
             .expect(422);
 
         const body = response.body as BrandErrorResponse;
@@ -85,7 +85,7 @@ describe('POST /brands — negative cases', () => {
     });
 
     it('should return 422 when name is missing', async () => {
-        const response = await brandClient.post({description: faker.lorem.slug(3)})
+        const response = await brandClient.postPartial({description: faker.lorem.slug(3)})
             .expect(422);
 
         const body = response.body as BrandErrorResponse;
@@ -93,7 +93,7 @@ describe('POST /brands — negative cases', () => {
     });
 
     it('should return 422 when name is empty string', async () => {
-        const response = await brandClient.post({name: ''})
+        const response = await brandClient.postPartial({name: ''})
             .expect(422);
 
         const body = response.body as BrandErrorResponse;
@@ -101,7 +101,7 @@ describe('POST /brands — negative cases', () => {
     });
 
     it('should return 422 when name is shorter than 2 characters', async () => {
-        const response = await brandClient.post({name: 'A'})
+        const response = await brandClient.postPartial({name: 'A'})
             .expect(422);
 
         const body = response.body as BrandErrorResponse;

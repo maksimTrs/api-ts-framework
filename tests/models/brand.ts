@@ -1,9 +1,12 @@
 // Request and response shapes for Brand resource
 
 export interface BrandRequestBody {
-    name?: string;
+    name: string;
     description?: string;
 }
+
+// All fields optional — for negative tests with missing required fields
+export type BrandRequestBodyPartial = Partial<BrandRequestBody>;
 
 export interface BrandResponse {
     _id: string;

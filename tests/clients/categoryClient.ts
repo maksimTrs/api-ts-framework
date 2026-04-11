@@ -1,6 +1,6 @@
 import supertest, {Test} from 'supertest';
 import {env} from '@helpers/envConfig';
-import {CategoryRequestBody} from '@models/category';
+import {CategoryRequestBody, CategoryRequestBodyPartial} from '@models/category';
 
 // swagger -> https://www.practice-react.sdetunicorns.com/test/api-docs/
 export class CategoryClient {
@@ -34,11 +34,19 @@ export class CategoryClient {
         return this.withAuth(this.request.post('/categories').send(body));
     }
 
+    postPartial(body: CategoryRequestBodyPartial): Test {
+        return this.withAuth(this.request.post('/categories').send(body));
+    }
+
     postRaw(body: Record<string, unknown>): Test {
         return this.withAuth(this.request.post('/categories').send(body));
     }
 
     put(categoryId: string, body: CategoryRequestBody): Test {
+        return this.withAuth(this.request.put(`/categories/${categoryId}`).send(body));
+    }
+
+    putPartial(categoryId: string, body: CategoryRequestBodyPartial): Test {
         return this.withAuth(this.request.put(`/categories/${categoryId}`).send(body));
     }
 

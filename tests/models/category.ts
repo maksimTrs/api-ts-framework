@@ -1,8 +1,11 @@
 // Request and response shapes for Category resource
 
 export interface CategoryRequestBody {
-    name?: string;
+    name: string;
 }
+
+// All fields optional — for negative tests with missing required fields
+export type CategoryRequestBodyPartial = Partial<CategoryRequestBody>;
 
 export interface CategoryResponse {
     _id: string;
