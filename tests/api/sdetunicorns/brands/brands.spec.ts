@@ -6,7 +6,7 @@ import {brandSchemas} from '@schemas/brandSchemas';
 
 const brandClient = new BrandClient();
 
-describe('[smoke] GET /brands', () => {
+describe('GET /brands', () => {
     it('should return a list of brands', async () => {
         const response = await brandClient.get()
             .expect(200);
