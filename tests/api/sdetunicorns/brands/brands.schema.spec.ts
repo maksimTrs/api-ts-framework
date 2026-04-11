@@ -14,7 +14,7 @@ describe('GET /brands/{id} — response schema', () => {
             .expect(200);
 
         brandId = (response.body as BrandResponse)._id;
-        expect(brandId).toBeTruthy();
+        expect(brandId).toEqual(expect.any(String));
     });
 
     afterAll(async () => {
@@ -71,7 +71,7 @@ describe('PUT /brands/{id} — response schema', () => {
             .expect(200);
 
         brandId = (response.body as BrandResponse)._id;
-        expect(brandId).toBeTruthy();
+        expect(brandId).toEqual(expect.any(String));
     });
 
     afterAll(async () => {
@@ -98,7 +98,7 @@ describe('DELETE /brands/{id} — response schema', () => {
             .expect(200);
 
         brandId = (response.body as BrandResponse)._id;
-        expect(brandId).toBeTruthy();
+        expect(brandId).toEqual(expect.any(String));
     });
 
     // DELETE test removes the brand itself — no afterAll cleanup needed

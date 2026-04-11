@@ -39,7 +39,7 @@ describe('API testing: brands endpoints', () => {
             .expect(200);
 
         const body = response.body as BrandResponse;
-        expect(body._id).toBeTruthy();
+        expect(body._id).toEqual(expect.any(String));
 
         brandId = body._id;
     });
@@ -52,7 +52,7 @@ describe('API testing: brands endpoints', () => {
         }
     });
 
-    it('GET /brands/{id}', async () => {
+    it('should return brand by id', async () => {
         const response = await brandClient
             .getById(brandId)
             .expect(200);
@@ -64,7 +64,7 @@ describe('API testing: brands endpoints', () => {
         expect(body.description).toBe(brandPayload.description);
     });
 
-    it('POST /brands', async () => {
+    it('should create a new brand', async () => {
         const postBody = createBrandPayload();
 
         const response = await brandClient
@@ -79,7 +79,7 @@ describe('API testing: brands endpoints', () => {
         expect(body.__v).toBe(0);
     });
 
-    it('PUT /brands/{id}', async () => {
+    it('should update an existing brand', async () => {
         const putBody = createBrandPayload();
 
         const response = await brandClient
@@ -89,12 +89,12 @@ describe('API testing: brands endpoints', () => {
         const body = response.body as BrandResponse;
 
         expect(body._id).toBe(brandId);
-        expect(body.updatedAt).toBeTruthy();
+        expect(body.updatedAt).toEqual(expect.any(String));
         expect(body.name).toBe(putBody.name);
         expect(body.description).toBe(putBody.description);
     });
 
-    it('DELETE /brands/{id}', async () => {
+    it('should delete a brand', async () => {
         const response = await brandClient
             .delete(brandId)
             .expect(200);

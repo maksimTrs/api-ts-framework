@@ -52,7 +52,7 @@ describe('Categories', () => {
 
 
     describe('Create Categories', () => {
-        it('POST /categories', async () => {
+        it('should create a new category', async () => {
             const body = createCategoryPayload();
             const response = await categoryClient
                 .post(body);
@@ -75,10 +75,10 @@ describe('Categories', () => {
                 .expect(200);
 
             categoryId = (response.body as CategoryResponse)._id;
-            expect(categoryId).toBeTruthy();
+            expect(categoryId).toEqual(expect.any(String));
         });
 
-        it('DELETE /categories/:id', async () => {
+        it('should delete a category', async () => {
             const response = await categoryClient
                 .delete(categoryId)
                 .expect(200);

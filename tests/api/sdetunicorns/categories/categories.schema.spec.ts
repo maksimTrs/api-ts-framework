@@ -49,7 +49,7 @@ describe('DELETE /categories/{id} — response schema', () => {
             .expect(200);
 
         categoryId = (response.body as CategoryResponse)._id;
-        expect(categoryId).toBeTruthy();
+        expect(categoryId).toEqual(expect.any(String));
     });
 
     // DELETE test removes the category itself — no afterAll cleanup needed
