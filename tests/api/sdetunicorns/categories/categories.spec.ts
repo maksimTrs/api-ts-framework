@@ -9,23 +9,17 @@ const categoryClient = new CategoryClient();
 
 describe('GET /categories', () => {
     it('should return a list of categories', async () => {
-        const response = await categoryClient.get()
+        const response = await categoryClient
+            .get()
             .expect(200);
 
         const body = response.body as CategoryListItem[];
         expect(body.length).toBeGreaterThan(1);
-        expect(body).toEqual(
-            expect.arrayOf(
-                {
-                    _id: expect.any(String),
-                    name: expect.any(String),
-                }
-            )
-        );
     });
 
     it('should match the expected response schema', async () => {
-        const response = await categoryClient.get()
+        const response = await categoryClient
+            .get()
             .expect(200);
 
         expect(response.body).toEqual(
@@ -43,13 +37,16 @@ describe('Categories', () => {
         const response = await authClient
             .login()
             .expect(200);
+
         const body = response.body as LoginResponse;
         categoryClient = new CategoryClient(body.token);
     });
 
     afterAll(async () => {
         for (const id of createdCategoryIds) {
-            await categoryClient.delete(id);
+            await categoryClient
+                .delete(id)
+                .expect(200);
         }
     });
 
@@ -62,6 +59,7 @@ describe('Categories', () => {
 
             const created = response.body as CategoryResponse;
             createdCategoryIds.push(created._id);
+
             expect(response.statusCode).toEqual(200);
         });
     });
@@ -75,7 +73,9 @@ describe('Categories', () => {
             const response = await categoryClient
                 .post(body)
                 .expect(200);
+
             categoryId = (response.body as CategoryResponse)._id;
+            expect(categoryId).toBeTruthy();
         });
 
         it('DELETE /categories/:id', async () => {
