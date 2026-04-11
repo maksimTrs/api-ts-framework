@@ -11,9 +11,13 @@ export class CategoryClient {
     }
 
     private withAuth(req: Test): Test {
-        return this.token
-            ? req.set('Authorization', `Bearer ${this.token}`)
-            : req;
+        if (!this.token) {
+            throw new Error(
+                'CategoryClient: auth token is required for this operation. '
+                + 'Pass token via constructor: new CategoryClient(token)',
+            );
+        }
+        return req.set('Authorization', `Bearer ${this.token}`);
     }
 
     get(): Test {
