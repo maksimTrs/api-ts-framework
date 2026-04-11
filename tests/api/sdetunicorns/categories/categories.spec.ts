@@ -7,7 +7,7 @@ import {categorySchemas} from '@schemas/categorySchemas';
 
 const categoryClient = new CategoryClient();
 
-describe('[smoke] GET /categories', () => {
+describe('GET /categories', () => {
     it('should return a list of categories', async () => {
         const response = await categoryClient.get()
             .expect(200);
