@@ -44,7 +44,7 @@ describe('POST /brands — response schema', () => {
     });
 
     it('should match the expected schema on 422', async () => {
-        const response = await brandClient.post({})
+        const response = await brandClient.postPartial({})
             .expect(422);
 
         expect(response.body).toStrictEqual(brandSchemas.error);
