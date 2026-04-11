@@ -94,6 +94,7 @@ describe('API testing: brands endpoints', () => {
         expect(body.description).toBe(putBody.description);
     });
 
+    // Reuses brandId from beforeAll to minimize API calls against external test server
     it('should delete a brand', async () => {
         const response = await brandClient
             .delete(brandId)

@@ -38,6 +38,14 @@ describe('POST /categories — response schema', () => {
 
         expect(response.body).toStrictEqual(categorySchemas.full);
     });
+
+    it('should match the expected schema on 422', async () => {
+        const response = await categoryClient
+            .postPartial({})
+            .expect(422);
+
+        expect(response.body).toStrictEqual(categorySchemas.error);
+    });
 });
 
 describe('DELETE /categories/{id} — response schema', () => {

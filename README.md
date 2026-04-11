@@ -22,7 +22,7 @@ Designed as a reference architecture for SDET teams — clean layering, strict t
 | **ESLint 10** | Static analysis — flat config with TypeScript + Jest rules |
 | **Husky + lint-staged** | Git hooks — lint on pre-commit |
 | **Docker** | Containerized execution — single command to run all tests |
-| **GitHub Actions** | CI/CD — lint, smoke tests, report deployment |
+| **GitHub Actions** | CI/CD — lint, test, report deployment |
 
 ---
 
@@ -32,7 +32,6 @@ Designed as a reference architecture for SDET teams — clean layering, strict t
 - **Typed API contracts** — `interface` for every request body, response, list item, and error shape
 - **Factory functions** — generate test data with Faker, accept `Partial<T>` overrides for variations
 - **Schema validation** — dedicated `*.schema.spec.ts` files verify exact response structure via asymmetric matchers
-- **Smoke test suite** — dedicated `smoke.spec.ts` with GET-only tests, runnable separately in CI
 - **Global assertion guard** — `expect.hasAssertions()` in every test automatically (catches forgotten `await`)
 - **Path aliases** — clean imports: `@clients/*`, `@models/*`, `@data/*`, `@schemas/*`, `@helpers/*`
 - **Three reporters** — console output + JUnit XML (CI integration) + interactive HTML dashboard
@@ -146,9 +145,6 @@ PASSWORD=your-password-here
 # Run all tests
 npm test
 
-# Run smoke tests only (GET endpoints, no data mutation)
-npm run test:smoke
-
 # Run specific test file
 npx jest tests/api/sdetunicorns/brands/brands.spec.ts
 
@@ -203,7 +199,7 @@ push / PR to main
        │
        ├── lint          → ESLint static analysis
        │
-       └── smoke         → Smoke tests ([smoke] tagged)
+       └── test          → Full test suite against live API
               │
               ├── JUnit XML report  → GitHub Checks tab
               ├── HTML report       → Uploaded as artifact (14-day retention)
@@ -214,7 +210,7 @@ push / PR to main
 | Job | Runs on | What it does |
 |---|---|---|
 | **lint** | Every commit | `npm run lint` — catches code issues before tests |
-| **smoke** | Every commit | `npm run test:smoke` — GET-only tests against live API |
+| **test** | Every commit | `npm test` — full test suite against live API |
 | **deploy-report** | main only | Deploys HTML dashboard to [GitHub Pages](https://maksimtrs.github.io/api-ts-framework/) |
 
 ---
