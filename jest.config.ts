@@ -21,6 +21,9 @@ const config: Config = {
     prefix: '<rootDir>/',
   }),
 
+  // Acquires the auth token once before workers fork (shared via process.env.AUTH_TOKEN)
+  globalSetup: '<rootDir>/tests/setup/globalSetup.ts',
+
   // Global hooks — runs before each test file (hasAssertions, shared cleanup, etc.)
   setupFilesAfterEnv: ['<rootDir>/tests/setup/globalHooks.ts'],
 

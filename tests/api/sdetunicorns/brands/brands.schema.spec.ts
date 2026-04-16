@@ -1,7 +1,7 @@
 import {BrandClient} from '@clients/brandClient';
 import {brandSchemas} from '@schemas/brandSchemas';
 import {createBrandPayload} from '@data/brandFactory';
-import {BrandResponse} from '@models/brand';
+import {BrandRequestBody, BrandResponse} from '@models/brand';
 
 const brandClient = new BrandClient();
 
@@ -55,7 +55,7 @@ describe('POST /brands — response schema', () => {
 
     it('should match the expected schema on 422', async () => {
         const response = await brandClient
-            .postPartial({})
+            .post<Partial<BrandRequestBody>>({})
             .expect(422);
 
         expect(response.body).toStrictEqual(brandSchemas.error);

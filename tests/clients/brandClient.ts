@@ -1,60 +1,27 @@
-import supertest, {Test} from 'supertest';
-import {env} from '@helpers/envConfig';
-import {BrandRequestBody, BrandRequestBodyPartial} from '@models/brand';
+import type {Test} from 'supertest';
+import {httpClient} from '@helpers/httpClient';
+import type {BrandRequestBody} from '@models/brand';
 
 // swagger -> https://www.practice-react.sdetunicorns.com/test/api-docs/
+// All /brands endpoints are public (no auth).
 export class BrandClient {
-    private readonly request = supertest(env.BASE_URL);
-
     get(): Test {
-        return this.request
-            .get('/brands');
+        return httpClient.get('/brands');
     }
 
     getById(brandId: string): Test {
-        return this.request
-            .get(`/brands/${brandId}`);
+        return httpClient.get(`/brands/${brandId}`);
     }
 
-    post(body: BrandRequestBody): Test {
-        return this.request
-            .post('/brands')
-            .send(body);
+    post<T = BrandRequestBody>(body: T): Test {
+        return httpClient.post('/brands', body);
     }
 
-    postPartial(body: BrandRequestBodyPartial): Test {
-        return this.request
-            .post('/brands')
-            .send(body);
-    }
-
-    postRaw(body: Record<string, unknown>): Test {
-        return this.request
-            .post('/brands')
-            .send(body);
-    }
-
-    put(brandId: string, body: BrandRequestBody): Test {
-        return this.request
-            .put(`/brands/${brandId}`)
-            .send(body);
-    }
-
-    putPartial(brandId: string, body: BrandRequestBodyPartial): Test {
-        return this.request
-            .put(`/brands/${brandId}`)
-            .send(body);
-    }
-
-    putRaw(brandId: string, body: Record<string, unknown>): Test {
-        return this.request
-            .put(`/brands/${brandId}`)
-            .send(body);
+    put<T = BrandRequestBody>(brandId: string, body: T): Test {
+        return httpClient.put(`/brands/${brandId}`, body);
     }
 
     delete(brandId: string): Test {
-        return this.request
-            .delete(`/brands/${brandId}`);
+        return httpClient.delete(`/brands/${brandId}`);
     }
-
 }

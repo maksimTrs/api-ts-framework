@@ -1,61 +1,35 @@
-import supertest, {Test} from 'supertest';
+import type {Test} from 'supertest';
 import {env} from '@helpers/envConfig';
-import {CategoryRequestBody, CategoryRequestBodyPartial} from '@models/category';
+import {HttpClient, httpClient} from '@helpers/httpClient';
+import type {CategoryRequestBody} from '@models/category';
 
 // swagger -> https://www.practice-react.sdetunicorns.com/test/api-docs/
+// GET is public; POST/PUT/DELETE require Bearer auth (token from env.AUTH_TOKEN).
 export class CategoryClient {
-    private readonly request = supertest(env.BASE_URL);
+    private _authedHttp?: HttpClient;
 
-
-    constructor(private readonly token?: string) {
-    }
-
-    private withAuth(req: Test): Test {
-        if (!this.token) {
-            throw new Error(
-                'CategoryClient: auth token is required for this operation. '
-                + 'Pass token via constructor: new CategoryClient(token)',
-            );
-        }
-        return req.set('Authorization', `Bearer ${this.token}`);
+    // Built lazily so GET-only usage doesn't require AUTH_TOKEN.
+    private get authedHttp(): HttpClient {
+        return (this._authedHttp ??= httpClient.withToken(env.AUTH_TOKEN));
     }
 
     get(): Test {
-        return this.request
-            .get('/categories');
+        return httpClient.get('/categories');
     }
 
     getById(categoryId: string): Test {
-        return this.request
-            .get(`/categories/${categoryId}`);
+        return httpClient.get(`/categories/${categoryId}`);
     }
 
-    post(body: CategoryRequestBody): Test {
-        return this.withAuth(this.request.post('/categories').send(body));
+    post<T = CategoryRequestBody>(body: T): Test {
+        return this.authedHttp.post('/categories', body);
     }
 
-    postPartial(body: CategoryRequestBodyPartial): Test {
-        return this.withAuth(this.request.post('/categories').send(body));
-    }
-
-    postRaw(body: Record<string, unknown>): Test {
-        return this.withAuth(this.request.post('/categories').send(body));
-    }
-
-    put(categoryId: string, body: CategoryRequestBody): Test {
-        return this.withAuth(this.request.put(`/categories/${categoryId}`).send(body));
-    }
-
-    putPartial(categoryId: string, body: CategoryRequestBodyPartial): Test {
-        return this.withAuth(this.request.put(`/categories/${categoryId}`).send(body));
-    }
-
-    putRaw(categoryId: string, body: Record<string, unknown>): Test {
-        return this.withAuth(this.request.put(`/categories/${categoryId}`).send(body));
+    put<T = CategoryRequestBody>(categoryId: string, body: T): Test {
+        return this.authedHttp.put(`/categories/${categoryId}`, body);
     }
 
     delete(categoryId: string): Test {
-        return this.withAuth(this.request.delete(`/categories/${categoryId}`));
+        return this.authedHttp.delete(`/categories/${categoryId}`);
     }
-
 }

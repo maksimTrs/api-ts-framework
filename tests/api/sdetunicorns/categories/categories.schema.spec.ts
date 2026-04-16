@@ -1,22 +1,9 @@
 import {CategoryClient} from '@clients/categoryClient';
-import {AuthClient} from '@clients/authClient';
 import {categorySchemas} from '@schemas/categorySchemas';
 import {createCategoryPayload} from '@data/categoryFactory';
-import {LoginResponse} from '@models/auth';
-import {CategoryResponse} from '@models/category';
+import {CategoryRequestBody, CategoryResponse} from '@models/category';
 
-let categoryClient: CategoryClient;
-
-beforeAll(async () => {
-    const authClient = new AuthClient();
-
-    const response = await authClient
-        .login()
-        .expect(200);
-    const body = response.body as LoginResponse;
-
-    categoryClient = new CategoryClient(body.token);
-});
+const categoryClient = new CategoryClient();
 
 describe('POST /categories — response schema', () => {
     const createdCategoryIds: string[] = [];
@@ -41,7 +28,7 @@ describe('POST /categories — response schema', () => {
 
     it('should match the expected schema on 422', async () => {
         const response = await categoryClient
-            .postPartial({})
+            .post<Partial<CategoryRequestBody>>({})
             .expect(422);
 
         expect(response.body).toStrictEqual(categorySchemas.error);

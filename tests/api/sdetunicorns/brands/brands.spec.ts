@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 import {BrandClient} from '@clients/brandClient';
 import {createBrandPayload} from '@data/brandFactory';
-import {BrandErrorResponse, BrandListItem, BrandResponse} from '@models/brand';
+import {BrandErrorResponse, BrandListItem, BrandRequestBody, BrandResponse} from '@models/brand';
 import {brandSchemas} from '@schemas/brandSchemas';
 
 const brandClient = new BrandClient();
@@ -109,7 +109,7 @@ describe('POST /brands — negative cases', () => {
 
     it('should return 422 when body is empty', async () => {
         const response = await brandClient
-            .postPartial({})
+            .post<Partial<BrandRequestBody>>({})
             .expect(422);
 
         const body = response.body as BrandErrorResponse;
@@ -119,7 +119,7 @@ describe('POST /brands — negative cases', () => {
 
     it('should return 422 when name is missing', async () => {
         const response = await brandClient
-            .postPartial({description: faker.lorem.slug(3)})
+            .post<Partial<BrandRequestBody>>({description: faker.lorem.slug(3)})
             .expect(422);
 
         const body = response.body as BrandErrorResponse;
@@ -129,7 +129,7 @@ describe('POST /brands — negative cases', () => {
 
     it('should return 422 when name is empty string', async () => {
         const response = await brandClient
-            .postPartial({name: ''})
+            .post<Partial<BrandRequestBody>>({name: ''})
             .expect(422);
 
         const body = response.body as BrandErrorResponse;
@@ -139,7 +139,7 @@ describe('POST /brands — negative cases', () => {
 
     it('should return 422 when name is shorter than 2 characters', async () => {
         const response = await brandClient
-            .postPartial({name: 'A'})
+            .post<Partial<BrandRequestBody>>({name: 'A'})
             .expect(422);
 
         const body = response.body as BrandErrorResponse;
@@ -152,7 +152,7 @@ describe('POST /brands — negative cases', () => {
         {type: 'boolean', value: true},
     ])('should return 422 when name is $type', async ({value}) => {
         const response = await brandClient
-            .postRaw({name: value})
+            .post<Record<string, unknown>>({name: value})
             .expect(422);
 
         const body = response.body as BrandErrorResponse;
